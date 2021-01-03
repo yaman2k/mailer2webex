@@ -6,6 +6,8 @@ from pymongo import MongoClient
 from dotenv import load_dotenv
 from mailer_request import mailer_members
 from webex_request import webex_room_addon, webex_team_addon
+from multiprocessing import Process
+
 
 #ability to find .env file
 load_dotenv()
@@ -27,6 +29,7 @@ def index():
         webex_feedback = "none"
         entry_title = "none"
         user_count = "N/A"
+        mailer_status_code = ""
 
         #Collect user submitted entries from web GUI and insert into MongoDB
         if request.method == "POST":
@@ -36,14 +39,17 @@ def index():
                 formatted_date = datetime.datetime.today().strftime("%Y-%m-%d %H:%M:%S")
                 
                 #send request over to mailer function to retrieve members
-                mailer_status_code, user_data, user_count = mailer_members(entry_mailer)
+                try:
+                    mailer_status_code, user_data, user_count = mailer_members(entry_mailer)
+                except:
+                    webex_feedback = "warning"
 
                 #send feedback to web GUI that operation is successful
                 if mailer_status_code==200:
                     mailer_feedback= "success"
                     for user in user_data['members']:
-                        a= webex_room_addon(entry_title,user)
-                        print(a)
+                        a= Process(target=webex_room_addon,args=(entry_title,user))
+                        a.start()
                     webex_feedback = "success"
                 else:
                     mailer_feedback="error"

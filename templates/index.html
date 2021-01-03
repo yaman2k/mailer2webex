@@ -49,7 +49,7 @@
                             </div>
                         </div>
                         <div class="header-toolbar">
-                            <a href="javascript:;" class="btn btn--icon">
+                            <a href="mailto:yhakmi@cisco.com?subjetct=Mailer to Webex Feedback" class="btn btn--icon">
                                 <span class="icon-mail"></span>
                             </a>
                             <a href="javascript:;" class="btn btn--icon">
@@ -118,7 +118,6 @@
                                     </div>
                                     {% endif %}
                                     {% if webex_feedback == "success" %}
-                                    <section id="show_data">
                                     <div class="timeline__item">
                                         <div class="timeline__icon timeline--success"></div>
                                         <div class="timeline__time">{{ formatted_date }}</div>
@@ -127,7 +126,6 @@
                                             <div>Successfuly processed request for Webex Space titled "{{title}}" with {{user_count}} members.</div>
                                         </div>
                                     </div>
-                                    </section>
                                     {% endif %}
                                     {% if webex_feedback == "warning" %}
                                     <div class="timeline__item">
